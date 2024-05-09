@@ -1,7 +1,8 @@
-#include <iostream> 
+#include <iostream>
 #include <fstream>
 #include <string>
 #include <vector>
+#include <sstream>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ public:
     virtual string getType() = 0;
     virtual string getFullName() { return firstName + " " + lastName; }
     virtual string getCSVData() { return ""; }
+    virtual void editInfo() {}
 };
 
 class Student : public Person {
@@ -29,10 +31,14 @@ private:
     string motherName;
     string fatherPhoneNumber;
     string motherPhoneNumber;
+    string registationDate;
+    string email;
+    string fatherEmail;
+    string motherEmail;
 
 public:
-    Student(string first, string last, int studentID, string phone, string addr, string father, string mother, string fatherPhone, string motherPhone) :
-        Person(first, last), id(studentID), phoneNumber(phone), address(addr), fatherName(father), motherName(mother), fatherPhoneNumber(fatherPhone), motherPhoneNumber(motherPhone) {}
+    Student(string first, string last, int studentID, string phone, string addr, string father, string mother, string fatherPhone, string motherPhone, string regDate, string mail, string fatherMail, string motherMail) :
+        Person(first, last), id(studentID), phoneNumber(phone), address(addr), fatherName(father), motherName(mother), fatherPhoneNumber(fatherPhone), motherPhoneNumber(motherPhone), registationDate(regDate), email(mail), fatherEmail(fatherMail), motherEmail(motherMail) {}
 
     void addCourseGrade(string course, double grade) {
         coursesGrades.push_back(make_pair(course, grade));
@@ -42,18 +48,21 @@ public:
         cout << "Name: " << firstName << " " << lastName << endl;
         cout << "ID: " << id << endl;
         cout << "Phone number: " << phoneNumber << endl;
+        cout << "Email: " << email << endl;
         cout << "Address: " << address << endl;
         cout << "Father's Name: " << fatherName << endl;
         cout << "Mother's Name: " << motherName << endl;
         cout << "Father's Phone number: " << fatherPhoneNumber << endl;
         cout << "Mother's Phone number: " << motherPhoneNumber << endl;
+        cout << "Father's Email: " << fatherEmail << endl;
+        cout << "Mother's Email: " << motherEmail << endl;
         cout << "Courses and Grades: ";
         for (const auto& courseGrade : coursesGrades) {
             cout << courseGrade.first << " (" << courseGrade.second << "), ";
         }
         cout << endl;
+        cout << "Registration Date: " << registationDate << endl;
 
-        // Υπολογισμός και εμφάνιση του μέσου όρου των βαθμών
         double averageGrade = calculateAverageGrade();
         cout << "Average Grade: " << averageGrade << endl;
     }
@@ -64,17 +73,61 @@ public:
 
     string getCSVData() override {
         string csvData;
-        csvData += "Student,";
+
         csvData += firstName + "," + lastName + ",";
         csvData += to_string(id) + ",";
         csvData += phoneNumber + ",";
+        csvData += email + ",";
         csvData += address + ",";
         csvData += fatherName + "," + motherName + ",";
         csvData += fatherPhoneNumber + "," + motherPhoneNumber + ",";
+        csvData += fatherEmail + "," + motherEmail + ",";
+        csvData += to_string(coursesGrades.size()) + ",";
+        double totalGrade = 0;
         for (const auto& courseGrade : coursesGrades) {
-            csvData += courseGrade.first + " (" + to_string(courseGrade.second) + "),";
+            totalGrade += courseGrade.second;
         }
+        double averageGrade = coursesGrades.empty() ? 0.0 : totalGrade / coursesGrades.size();
+        csvData += to_string(averageGrade);
+        csvData += ",";
+        csvData += registationDate;
+
         return csvData;
+    }
+
+    void editInfo() override {
+        string newPhone, newAddress, newFatherName, newMotherName, newFatherPhone, newMotherPhone, newEmail, newFatherEmail, newMotherEmail;
+
+        cout << "Enter new phone number: ";
+        cin >> newPhone;
+        cout << "Enter new email: ";
+        cin >> newEmail;
+        cout << "Enter new address: ";
+        cin >> newAddress;
+        cout << "Enter new father's name: ";
+        cin >> newFatherName;
+        cout << "Enter new mother's name: ";
+        cin >> newMotherName;
+        cout << "Enter new father's phone number: ";
+        cin >> newFatherPhone;
+        cout << "Enter new mother's phone number: ";
+        cin >> newMotherPhone;
+        cout << "Enter new father's email: ";
+        cin >> newFatherEmail;
+        cout << "Enter new mother's email: ";
+        cin >> newMotherEmail;
+
+        phoneNumber = newPhone;
+        email = newEmail;
+        address = newAddress;
+        fatherName = newFatherName;
+        motherName = newMotherName;
+        fatherPhoneNumber = newFatherPhone;
+        motherPhoneNumber = newMotherPhone;
+        fatherEmail = newFatherEmail;
+        motherEmail = newMotherEmail;
+
+        cout << "Information updated successfully." << endl;
     }
 
 private:
@@ -94,7 +147,6 @@ private:
 
 class Teacher : public Person {
 private:
-    string department;
     string phoneNumber;
     string address;
     string fatherName;
@@ -122,7 +174,33 @@ public:
     }
 
     string getCSVData() override {
-        return "Teacher," + firstName + "," + lastName + ",," + phoneNumber + "," + address + "," + fatherName + "," + motherName + "," + fatherPhoneNumber + "," + motherPhoneNumber + "," + "," + department;
+        return firstName + "," + lastName + "," + phoneNumber + "," + address + "," + fatherName + "," + motherName + "," + fatherPhoneNumber + "," + motherPhoneNumber + "," ;
+    }
+
+    void editInfo() override {
+        string newPhone, newAddress, newFatherName, newMotherName, newFatherPhone, newMotherPhone;
+
+        cout << "Enter new phone number: ";
+        cin >> newPhone;
+        cout << "Enter new address: ";
+        cin >> newAddress;
+        cout << "Enter new father's name: ";
+        cin >> newFatherName;
+        cout << "Enter new mother's name: ";
+        cin >> newMotherName;
+        cout << "Enter new father's phone number: ";
+        cin >> newFatherPhone;
+        cout << "Enter new mother's phone number: ";
+        cin >> newMotherPhone;
+
+        phoneNumber = newPhone;
+        address = newAddress;
+        fatherName = newFatherName;
+        motherName = newMotherName;
+        fatherPhoneNumber = newFatherPhone;
+        motherPhoneNumber = newMotherPhone;
+
+        cout << "Information updated successfully." << endl;
     }
 };
 
@@ -139,23 +217,97 @@ public:
     }
 
     string getCSVData() override {
-        return "Supervisor," + firstName + "," + lastName;
+        return firstName + "," + lastName+",";
+    }
+
+    void editInfo() override {
+        cout << "Supervisors cannot be edited." << endl;
     }
 };
 
+void readDataFromCSV(const string& filename, vector<Person*>& people) {
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cout << "Failed to open the file: " << filename << endl;
+        return;
+    }
+
+    string line;
+    while (getline(file, line)) {
+        istringstream iss(line);
+        string type;
+        getline(iss, type, ',');
+
+        if (type == "Student") {
+            string firstName, lastName, phone, address, fatherName, motherName, fatherPhone, motherPhone, registrationDate, email, fatherEmail, motherEmail;
+            getline(iss, firstName, ',');
+            getline(iss, lastName, ',');
+             int id;
+            iss >> id;
+            getline(iss, phone, ',');
+            getline(iss, email, ',');
+            getline(iss, address, ',');
+            getline(iss, fatherName, ',');
+            getline(iss, motherName, ',');
+            getline(iss, fatherPhone, ',');
+            getline(iss, motherPhone, ',');
+            getline(iss, fatherEmail, ',');
+            getline(iss, motherEmail, ',');
+            getline(iss, registrationDate, ',');
+
+
+
+
+            Student* student = new Student(firstName, lastName, id, phone, address, fatherName, motherName, fatherPhone, motherPhone, registrationDate, email, fatherEmail, motherEmail);
+             string course;
+            double grade;
+            while (getline(iss, course, ',')) {
+                iss >> grade;
+                student->addCourseGrade(course, grade);
+            }
+
+            people.push_back(student);
+
+        } else if (type == "Teacher") {
+            string firstName, lastName,  phone, address, fatherName, motherName, fatherPhone, motherPhone;
+            getline(iss, firstName, ',');
+            getline(iss, lastName, ',');
+            getline(iss, phone, ',');
+            getline(iss, address, ',');
+            getline(iss, fatherName, ',');
+            getline(iss, motherName, ',');
+            getline(iss, fatherPhone, ',');
+            getline(iss, motherPhone, ',');
+
+            Teacher* teacher = new Teacher(firstName, lastName,  phone, address, fatherName, motherName, fatherPhone, motherPhone);
+            people.push_back(teacher);
+        } else if (type == "Supervisor") {
+            string firstName, lastName;
+            getline(iss, firstName, ',');
+            getline(iss, lastName, ',');
+
+            Supervisor* supervisor = new Supervisor(firstName, lastName);
+            people.push_back(supervisor);
+        }
+    }
+
+    file.close();
+}
+
 void addStudent(vector<Person*>& people) {
-    string firstName, lastName, phone, address, fatherName, motherName, fatherPhone, motherPhone;
-    int id;
-    vector<pair<string, double>> coursesGrades;
+    string firstName, lastName, phone, address, fatherName, motherName, fatherPhone, motherPhone, registrationDate, email, fatherEmail, motherEmail;
 
     cout << "Enter student's first name: ";
     cin >> firstName;
     cout << "Enter student's last name: ";
     cin >> lastName;
     cout << "Enter student's ID: ";
+    int id;
     cin >> id;
     cout << "Enter student's phone number: ";
     cin >> phone;
+    cout << "Enter student's email: ";
+    cin >> email;
     cout << "Enter student's address: ";
     cin >> address;
     cout << "Enter student's father's name: ";
@@ -166,10 +318,17 @@ void addStudent(vector<Person*>& people) {
     cin >> fatherPhone;
     cout << "Enter student's mother's phone number: ";
     cin >> motherPhone;
+    cout << "Enter student's father's email: ";
+    cin >> fatherEmail;
+    cout << "Enter student's mother's email: ";
+    cin >> motherEmail;
+    cout << "Enter student's registration date (DD/MM/YYYY): ";
+    cin >> registrationDate;
 
     cout << "Enter student's courses and grades (type 'done' when finished):" << endl;
     string course;
     double grade;
+    vector<pair<string, double>> coursesGrades;
     while (true) {
         cout << "Course: ";
         cin >> course;
@@ -178,10 +337,11 @@ void addStudent(vector<Person*>& people) {
         }
         cout << "Grade: ";
         cin >> grade;
+
         coursesGrades.push_back(make_pair(course, grade));
     }
 
-    Student* student = new Student(firstName, lastName, id, phone, address, fatherName, motherName, fatherPhone, motherPhone);
+    Student* student = new Student(firstName, lastName, id, phone, address, fatherName, motherName, fatherPhone, motherPhone, registrationDate, email, fatherEmail, motherEmail);
     for (const auto& courseGrade : coursesGrades) {
         student->addCourseGrade(courseGrade.first, courseGrade.second);
     }
@@ -311,41 +471,79 @@ void countPeople(const vector<Person*>& people) {
 }
 
 void saveDataToCSV(const vector<Person*>& people) {
-    ofstream outputFile("people_data.csv");
-    if (!outputFile.is_open()) {
-        cout << "Failed to open the file." << endl;
+    ofstream studentsFile("students_data.csv");
+    ofstream teachersFile("teachers_data.csv");
+    ofstream supervisorsFile("supervisors_data.csv");
+
+    if (!studentsFile.is_open() || !teachersFile.is_open() || !supervisorsFile.is_open()) {
+        cout << "Failed to open the files." << endl;
         return;
     }
 
-    outputFile << "Type,First Name,Last Name,ID,Phone Number,Address,Father's Name,Mother's Name,Father's Phone Number,Mother's Phone Number,Courses and Grades" << endl;
+    studentsFile << "Type,First Name,Last Name,ID,Phone Number,Email,Address,Father's Name,Mother's Name,Father's Phone Number,Mother's Phone Number,Father's Email,Mother's Email,Number of Cources,AverageGrade,Registration Date" << endl;
+    teachersFile << "Type,First Name,Last Name,Phone Number,Address,Father's Name,Mother's Name,Father's Phone Number,Mother's Phone Number" << endl;
+    supervisorsFile << "Type,First Name,Last Name" << endl;
 
     for (const auto& person : people) {
-        outputFile << person->getCSVData() << endl;
+        if (person->getType() == "Student") {
+            studentsFile << person->getType() << "," << person->getCSVData() << endl;
+        } else if (person->getType() == "Teacher") {
+            teachersFile << person->getType() << "," << person->getCSVData() << endl;
+        } else if (person->getType() == "Supervisor") {
+            supervisorsFile << person->getType() << "," << person->getCSVData() << endl;
+        }
     }
 
-    outputFile.close();
-    cout << "Data saved to 'people_data.csv'." << endl;
+    studentsFile.close();
+    teachersFile.close();
+    supervisorsFile.close();
+
+    cout << "Data saved to CSV files successfully." << endl;
 }
+void editPerson(vector<Person*>& people) {
+    string fullName;
+    cout << "Enter the full name of the person you want to edit: ";
+    cin.ignore();
+    getline(cin, fullName);
+
+    for (const auto& person : people) {
+        if (person->getFullName() == fullName) {
+            person->editInfo();
+            return;
+        }
+    }
+
+    cout << "Person not found." << endl;
+}
+
+
+
 
 int main() {
     vector<Person*> people;
+    readDataFromCSV("students_data.csv", people);
+    readDataFromCSV("teachers_data.csv", people);
+    readDataFromCSV("supervisors_data.csv", people);
+ while (true) {
+         cout << "---------------------------------------------" << endl;
+        cout << "|          School Management System         |" << endl;
+        cout << "---------------------------------------------" << endl;
 
-    int choice;
-    do {
-        cout << "\nMenu:\n";
-        cout << "1. Add a student\n";
-        cout << "2. Add a teacher\n";
-        cout << "3. Add a supervisor\n";
-        cout << "4. Delete a person\n";
-        cout << "5. Search for a person\n";
-        cout << "6. Display all students\n";
-        cout << "7. Display all teachers\n";
-        cout << "8. Display all supervisors\n";
-        cout << "9. Display all people\n";
-        cout << "10. Count people\n";
-        cout << "11. Save data to CSV\n";
-        cout << "12. Exit\n";
+        cout << "1. Add Student" << endl;
+        cout << "2. Add Teacher" << endl;
+        cout << "3. Add Supervisor" << endl;
+        cout << "4. Search Person" << endl;
+        cout << "5. Edit Person" << endl;
+        cout << "6. Delete Person" << endl;
+        cout << "7. Display Students" << endl;
+        cout << "8. Display Teachers" << endl;
+        cout << "9. Display Supervisors" << endl;
+        cout << "10. Display All" << endl;
+        cout << "11. Count People" << endl;
+        cout << "12. Save Data to CSV" << endl;
+        cout << "13. Exit" << endl;
         cout << "Enter your choice: ";
+        int choice;
         cin >> choice;
 
         switch (choice) {
@@ -359,41 +557,40 @@ int main() {
                 addSupervisor(people);
                 break;
             case 4:
-                deletePerson(people);
-                break;
-            case 5:
                 searchPerson(people);
                 break;
+            case 5:
+                editPerson(people);
+                break;
             case 6:
-                displayStudents(people);
+               deletePerson(people);
                 break;
             case 7:
-                displayTeachers(people);
+                displayStudents(people);
                 break;
             case 8:
-                displaySupervisors(people);
+                displayTeachers(people);
                 break;
             case 9:
-                displayAll(people);
+                displaySupervisors(people);
                 break;
             case 10:
-                countPeople(people);
+                displayAll(people);
                 break;
             case 11:
+                countPeople(people);
+                break;
+
+            case 12:
                 saveDataToCSV(people);
                 break;
-            case 12:
-                cout << "Exiting program." << endl;
-                break;
-            default:
-                cout << "Invalid choice. Please try again." << endl;
-                break;
-        }
-    } while (choice != 12);
+            case 13:
 
-    // Αποδέσμευση δυναμικής μνήμης
-    for (auto person : people) {
-        delete person;
+                cout << "Exiting program..." << endl;
+                return 0;
+            default:
+                cout << "Invalid choice. Please enter a number between 1 and 13." << endl;
+        }
     }
 
     return 0;
