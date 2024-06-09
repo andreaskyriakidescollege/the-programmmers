@@ -1,0 +1,80 @@
+Header Files: The necessary header files (iostream, fstream, string, vector, sstream) are included at the beginning of the code.
+
+Person Class: The Person class is defined, which serves as a base class for the Student class. It contains common attributes and pure virtual functions that must be overridden by derived classes.
+
+Student Class: The Student class is defined, which inherits from the Person class. It adds specific attributes and member functions related to students.
+
+Member Functions: The member functions of the Student class are implemented, including functions to add course grades, display student information, get the type of the object, get CSV data for file storage, and edit student information.
+
+Private Helper Function: The calculateAverageGrade function is defined as a private helper function to calculate the average grade of a student based on their course grades.
+
+double: This is a data type in C++ that represents floating-point numbers with double precision.
+
+auto: This keyword is used to automatically deduce the data type of a variable based on its initializer.
+
+const: This keyword is used to declare a variable as constant, meaning its value cannot be changed.
+
+for loop: This is a control flow statement that allows us to repeatedly execute a block of code.
+
+coursesGrades: This is a map that stores the names of courses as keys and their corresponding grades as values.
+
+totalGrade: This variable is used to store the sum of all the grades.
+
+coursesGrades.size(): This function returns the number of elements in the coursesGrades map.
+
+addStudent Function:
+This function allows the user to add a new student to the vector of people. It prompts the user to enter various details such as the student's first name, last name, ID, phone number, email, address, parents' names and contact information, registration date, and courses with their respective grades. The function creates a new Student object with the provided information and adds it to the vector.
+
+addTeacher Function:
+This function allows the user to add a new teacher to the vector of people. It prompts the user to enter details such as the teacher's first name, last name, phone number, address, parents' names and contact information. The function creates a new Teacher object with the provided information and adds it to the vector.
+
+addSupervisor Function:
+This function allows the user to add a new supervisor to the vector of people. It prompts the user to enter the supervisor's first name and last name. The function creates a new Supervisor object with the provided information and adds it to the vector.
+
+deletePerson Function:
+This function allows the user to delete a person from the vector of people. It prompts the user to enter the full name of the person they want to delete. The function searches for a person with a matching full name in the vector and deletes it if found.
+
+main Function:
+The main function is the entry point of the program. It reads data from a file and populates the vector of people accordingly. The file is expected to have lines in the following format: Type,FirstName,LastName,.... The type can be "Student", "Teacher", or "Supervisor". The function reads each line, extracts the type and the corresponding information, and creates the appropriate object based on the type. The created object is then added to the vector of people.
+
+searchPerson: Prompts the user to enter the full name of a person and searches for that person in the vector of people. If found, it displays the person's information; otherwise, it prints a message indicating that the person was not found.
+
+displayStudents: Displays the information of all the students in the vector of people.
+
+displayTeachers: Displays the information of all the teachers in the vector of people.
+
+displaySupervisors: Displays the information of all the supervisors in the vector of people.
+
+displayAll: Calls the above three functions to display the information of all the students, teachers, and supervisors.
+
+countPeople: Counts the number of students, teachers, and supervisors in the vector of people and prints the counts.
+
+saveDataToCSV: Saves the data of students, teachers, and supervisors to separate CSV files.
+
+editPerson: Prompts the user to enter the full name of a person and searches for that person in the vector of people. If found, it allows the user to edit the person's information; otherwise, it prints a message indicating that the person was not found.
+
+main: The main function of the program. It initializes an empty vector of people and reads data from CSV files into the vector. It then presents a menu to the user, allowing them to choose various options.
+
+addStudent(people): This function adds a student to the list of people.
+
+addTeacher(people): This function adds a teacher to the list of people.
+
+addSupervisor(people): This function adds a supervisor to the list of people.
+
+searchPerson(people): This function allows the user to search for a person in the list.
+
+editPerson(people): This function allows the user to edit the details of a person in the list.
+
+deletePerson(people): This function allows the user to delete a person from the list.
+
+displayStudents(people): This function displays all the students in the list.
+
+displayTeachers(people): This function displays all the teachers in the list.
+
+displaySupervisors(people): This function displays all the supervisors in the list.
+
+displayAll(people): This function displays all the people in the list.
+
+countPeople(people): This function counts the number of people in the list.
+
+saveDataToCSV(people): This function saves the data of all the people in the list to a CSV file.
